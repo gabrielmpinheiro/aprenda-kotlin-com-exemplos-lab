@@ -8,7 +8,7 @@ open class Usuario
 
 data class ConteudoEducacional(var nome: String, val duracao: Int = 60)
 
-data class Formacao(val nome: String, var conteudos: List<ConteudoEducacional>, val nivel: Nivel) {
+data class Formacao(val nome: String, var conteudos: MutableList<ConteudoEducacional>, val nivel: Nivel) {
 
     val inscritos = mutableListOf<Aluno>()
     val report: List<Aluno> = inscritos
@@ -38,6 +38,23 @@ data class Formacao(val nome: String, var conteudos: List<ConteudoEducacional>, 
     fun getInscritos(){
         println("Usuarios cadastrados na formação $nome :")
         println(report)
+    }
+
+    fun addCursos(curso: ConteudoEducacional){
+        //adiciona um curso a uma formação
+        if (!conteudos.contains(curso)) {
+            conteudos.add(curso)
+        } else {
+            println("Curso já adicionado")
+        }
+    }
+    fun removeCursos(curso: ConteudoEducacional){
+        //remove um curso de uma formação
+        if (conteudos.contains(curso)) {
+            conteudos.remove(curso)
+        } else {
+            println("Curso não encontrado")
+        }
     }
 }
 
@@ -76,6 +93,8 @@ fun main() {
     var formacao2 = Formacao("Formacao Webdesigner", novosConteudos, Nivel.INICIANTE)
     var formacao3 = Formacao("Formação Avançada", conteudosAvancados, Nivel.AVANCADO)
 
+
+
     /* Criando os alunos e cadastrando-os nos cursos*/
     var aluno1 = Aluno("Gabriel", Nivel.AVANCADO)
     var aluno2 = Aluno("Rafaela", Nivel.INTERMEDIARIO)
@@ -85,6 +104,19 @@ fun main() {
     formacao1.matricular(aluno2)
     formacao1.matricular(aluno3)
     formacao2.matricular(aluno1)
+
+    /* Testando apagar um curso existente da lista da formação 1*/
+    println("Apagando um curso de uma formação")
+    println(formacao1)
+    formacao1.removeCursos(curso1)
+    println("result:")
+    println(formacao1)
+
+    println("Adiccionando de volta o curso")
+    formacao1.addCursos(curso1)
+    println("result:")
+    println(formacao1)
+
 
     /* Pega todos os integrantes da primeira formação */
     println(formacao1.getInscritos())
